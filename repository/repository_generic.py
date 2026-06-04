@@ -10,7 +10,7 @@ class RepositoryGeneric:
         self.indice[id_entidad] = entidad
 
     def get_all(self):
-        return self.elementos
+        return list(self.elementos)
 
     def get_by_id(self, id_entidad):
         return self.indice.get(id_entidad)
