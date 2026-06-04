@@ -4,6 +4,9 @@ from controller.lector_controller import LectorController
 from controller.libro_controller import LibroController
 from controller.prestamo_controller import PrestamoController
 from controller.reporte_controller import ReporteController
+from model.lector import Lector
+from model.libro import Libro
+from model.prestamo import Prestamo
 from repository.repository_generic import RepositoryGeneric
 from service.lector_service import LectorService
 from service.libro_service import LibroService
@@ -14,9 +17,9 @@ from view.main_window import MainWindow
 
 def crear_aplicacion(root):
     # Repositories: guardan datos en memoria para cada tipo de entidad.
-    lector_repository = RepositoryGeneric("id_lector")
-    libro_repository = RepositoryGeneric("id_libro")
-    prestamo_repository = RepositoryGeneric("id_prestamo")
+    lector_repository: RepositoryGeneric[Lector] = RepositoryGeneric("id_lector")
+    libro_repository: RepositoryGeneric[Libro] = RepositoryGeneric("id_libro")
+    prestamo_repository: RepositoryGeneric[Prestamo] = RepositoryGeneric("id_prestamo")
 
     # Services: contienen reglas de negocio y usan repositories.
     lector_service = LectorService(lector_repository)

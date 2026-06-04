@@ -1,10 +1,11 @@
 from model.lector import Lector
+from repository.repository_generic import RepositoryGeneric
 
 
 class LectorService:
     """Contiene las reglas de negocio relacionadas con lectores."""
 
-    def __init__(self, lector_repository):
+    def __init__(self, lector_repository: RepositoryGeneric[Lector]):
         # El repositorio se recibe por constructor para mantener bajo acoplamiento.
         self.lector_repository = lector_repository
 

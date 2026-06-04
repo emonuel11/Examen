@@ -1,10 +1,18 @@
+from model.lector import Lector
+from model.libro import Libro
 from model.prestamo import Prestamo
+from repository.repository_generic import RepositoryGeneric
 
 
 class PrestamoService:
     """Contiene las reglas para registrar y consultar prestamos."""
 
-    def __init__(self, prestamo_repository, lector_repository, libro_repository):
+    def __init__(
+        self,
+        prestamo_repository: RepositoryGeneric[Prestamo],
+        lector_repository: RepositoryGeneric[Lector],
+        libro_repository: RepositoryGeneric[Libro],
+    ):
         # Este servicio necesita los tres repositorios para validar relaciones.
         self.prestamo_repository = prestamo_repository
         self.lector_repository = lector_repository

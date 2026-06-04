@@ -1,10 +1,11 @@
 from model.libro import Libro
+from repository.repository_generic import RepositoryGeneric
 
 
 class LibroService:
     """Contiene las reglas de negocio relacionadas con libros."""
 
-    def __init__(self, libro_repository):
+    def __init__(self, libro_repository: RepositoryGeneric[Libro]):
         self.libro_repository = libro_repository
 
     def registrar_libro(self, codigo, titulo, autor, categoria, cantidad):

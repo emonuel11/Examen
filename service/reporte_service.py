@@ -1,7 +1,18 @@
+from model.lector import Lector
+from model.libro import Libro
+from model.prestamo import Prestamo
+from repository.repository_generic import RepositoryGeneric
+
+
 class ReporteService:
     """Genera reportes sin depender de la interfaz grafica."""
 
-    def __init__(self, lector_repository, libro_repository, prestamo_repository):
+    def __init__(
+        self,
+        lector_repository: RepositoryGeneric[Lector],
+        libro_repository: RepositoryGeneric[Libro],
+        prestamo_repository: RepositoryGeneric[Prestamo],
+    ):
         self.lector_repository = lector_repository
         self.libro_repository = libro_repository
         self.prestamo_repository = prestamo_repository
