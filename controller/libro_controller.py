@@ -1,8 +1,11 @@
 class LibroController:
+    """Intermediario entre la vista de libros y LibroService."""
+
     def __init__(self, libro_service):
         self.libro_service = libro_service
 
     def registrar_libro(self, codigo, titulo, autor, categoria, cantidad):
+        # El controller mantiene separada la GUI de la logica de negocio.
         return self.libro_service.registrar_libro(
             codigo, titulo, autor, categoria, cantidad
         )

@@ -3,6 +3,8 @@ from tkinter import messagebox, ttk
 
 
 class GestionReportes:
+    """Pantalla para ejecutar reportes y mostrarlos en una tabla."""
+
     def __init__(self, ventana, reporte_controller):
         self.ventana = ventana
         self.reporte_controller = reporte_controller
@@ -12,6 +14,7 @@ class GestionReportes:
         self.crear_widgets()
 
     def crear_widgets(self):
+        # Botones que solicitan reportes al controller.
         botones = ttk.Frame(self.ventana, padding=10)
         botones.pack(fill=tk.X)
 
@@ -59,12 +62,14 @@ class GestionReportes:
             messagebox.showerror("Error", str(error))
 
     def configurar_tabla(self, columnas):
+        # La tabla cambia sus columnas segun el reporte solicitado.
         self.tabla["columns"] = columnas
         for columna in columnas:
             self.tabla.heading(columna, text=columna.capitalize())
             self.tabla.column(columna, width=180)
 
     def mostrar_resultados(self, resultados):
+        # Los resultados llegan como tuplas desde service y se insertan directo.
         self.limpiar_tabla()
         for resultado in resultados:
             self.tabla.insert("", tk.END, values=resultado)

@@ -8,6 +8,8 @@ from view.gestion_reportes import GestionReportes
 
 
 class MainWindow:
+    """Ventana principal: muestra el menu y abre las pantallas del sistema."""
+
     def __init__(
         self,
         root,
@@ -27,6 +29,7 @@ class MainWindow:
         self.crear_widgets()
 
     def crear_widgets(self):
+        # La vista crea controles visuales; no conoce repositorios ni reglas de negocio.
         contenedor = ttk.Frame(self.root, padding=20)
         contenedor.pack(fill=tk.BOTH, expand=True)
 
@@ -62,6 +65,7 @@ class MainWindow:
         )
 
     def abrir_gestion_lectores(self):
+        # Cada ventana recibe solo su controller correspondiente.
         ventana = tk.Toplevel(self.root)
         GestionLectores(ventana, self.lector_controller)
 

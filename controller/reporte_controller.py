@@ -1,8 +1,11 @@
 class ReporteController:
+    """Intermediario entre la vista de reportes y ReporteService."""
+
     def __init__(self, reporte_service):
         self.reporte_service = reporte_service
 
     def lectores_por_comunidad(self):
+        # Devuelve datos ya preparados por service para que la vista solo los muestre.
         return self.reporte_service.lectores_por_comunidad()
 
     def libros_inventario_bajo(self, cantidad_minima=3):

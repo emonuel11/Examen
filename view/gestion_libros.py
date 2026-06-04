@@ -3,6 +3,8 @@ from tkinter import messagebox, ttk
 
 
 class GestionLibros:
+    """Pantalla para registrar y consultar libros."""
+
     def __init__(self, ventana, libro_controller):
         self.ventana = ventana
         self.libro_controller = libro_controller
@@ -13,6 +15,7 @@ class GestionLibros:
         self.crear_widgets()
 
     def crear_widgets(self):
+        # Formulario de datos del libro.
         formulario = ttk.Frame(self.ventana, padding=10)
         formulario.pack(fill=tk.X)
 
@@ -50,6 +53,7 @@ class GestionLibros:
         )
 
         columnas = ("codigo", "titulo", "autor", "categoria", "cantidad")
+        # Tabla para mostrar libros registrados o filtrados.
         self.tabla = ttk.Treeview(self.ventana, columns=columnas, show="headings")
         for columna in columnas:
             self.tabla.heading(columna, text=columna.capitalize())
@@ -58,6 +62,7 @@ class GestionLibros:
 
     def registrar(self):
         try:
+            # Se convierten datos simples de la GUI y se delega al controller.
             libro = self.libro_controller.registrar_libro(
                 self.entradas["codigo"].get(),
                 self.entradas["titulo"].get(),
@@ -93,6 +98,7 @@ class GestionLibros:
         self.mostrar_libros(libros)
 
     def mostrar_libros(self, libros):
+        # Muestra los objetos Libro en filas de la tabla.
         self.limpiar_tabla()
         for libro in libros:
             self.tabla.insert(

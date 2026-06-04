@@ -1,10 +1,13 @@
 class ReporteService:
+    """Genera reportes sin depender de la interfaz grafica."""
+
     def __init__(self, lector_repository, libro_repository, prestamo_repository):
         self.lector_repository = lector_repository
         self.libro_repository = libro_repository
         self.prestamo_repository = prestamo_repository
 
     def lectores_por_comunidad(self):
+        # set evita repetir comunidades al construir el reporte.
         comunidades = set()
         for lector in self.lector_repository.get_all():
             comunidad = getattr(lector, "comunidad", None)
@@ -17,6 +20,8 @@ class ReporteService:
             for lector in self.lector_repository.get_all():
                 if getattr(lector, "comunidad", None) == comunidad:
                     cantidad += 1
+
+            # Cada resultado del reporte se guarda como tupla.
             reporte.append((comunidad, cantidad))
 
         return reporte
@@ -26,11 +31,13 @@ class ReporteService:
         for libro in self.libro_repository.get_all():
             cantidad = getattr(libro, "cantidad", 0)
             if cantidad <= cantidad_minima:
+                # Tupla: codigo, titulo y cantidad disponible.
                 reporte.append((libro.id_libro, libro.titulo, cantidad))
 
         return reporte
 
     def top_3_libros_mas_prestados(self):
+        # dict acumula la cantidad prestada por cada codigo de libro.
         prestamos_por_libro = {}
         for prestamo in self.prestamo_repository.get_all():
             codigo_libro = prestamo.libro.id_libro
@@ -45,7 +52,9 @@ class ReporteService:
         for codigo_libro, cantidad_prestada in prestamos_por_libro.items():
             libro = self.libro_repository.get_by_id(codigo_libro)
             if libro is not None:
+                # Tupla: codigo, titulo y total prestado.
                 reporte.append((codigo_libro, libro.titulo, cantidad_prestada))
 
+        # Se ordena de mayor a menor y se devuelven solo los primeros tres.
         reporte.sort(key=lambda resultado: resultado[2], reverse=True)
         return reporte[:3]

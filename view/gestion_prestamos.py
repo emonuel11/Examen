@@ -3,6 +3,8 @@ from tkinter import messagebox, ttk
 
 
 class GestionPrestamos:
+    """Pantalla para registrar y consultar prestamos."""
+
     def __init__(self, ventana, prestamo_controller):
         self.ventana = ventana
         self.prestamo_controller = prestamo_controller
@@ -13,6 +15,7 @@ class GestionPrestamos:
         self.crear_widgets()
 
     def crear_widgets(self):
+        # Formulario con los datos necesarios para solicitar un prestamo.
         formulario = ttk.Frame(self.ventana, padding=10)
         formulario.pack(fill=tk.X)
 
@@ -56,6 +59,7 @@ class GestionPrestamos:
         )
 
         columnas = ("codigo", "lector", "libro", "fecha", "cantidad")
+        # Tabla con los prestamos encontrados o registrados.
         self.tabla = ttk.Treeview(self.ventana, columns=columnas, show="headings")
         for columna in columnas:
             self.tabla.heading(columna, text=columna.capitalize())
@@ -64,6 +68,7 @@ class GestionPrestamos:
 
     def registrar(self):
         try:
+            # La regla de inventario no esta aqui; se ejecuta en PrestamoService.
             prestamo = self.prestamo_controller.registrar_prestamo(
                 self.entradas["codigo_prestamo"].get(),
                 int(self.entradas["identificacion_lector"].get()),
@@ -99,6 +104,7 @@ class GestionPrestamos:
         self.mostrar_prestamos(prestamos)
 
     def mostrar_prestamos(self, prestamos):
+        # Convierte cada prestamo en una fila visual de la tabla.
         self.limpiar_tabla()
         for prestamo in prestamos:
             self.tabla.insert(

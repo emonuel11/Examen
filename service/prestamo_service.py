@@ -2,12 +2,16 @@ from model.prestamo import Prestamo
 
 
 class PrestamoService:
+    """Contiene las reglas para registrar y consultar prestamos."""
+
     def __init__(self, prestamo_repository, lector_repository, libro_repository):
+        # Este servicio necesita los tres repositorios para validar relaciones.
         self.prestamo_repository = prestamo_repository
         self.lector_repository = lector_repository
         self.libro_repository = libro_repository
 
     def registrar_prestamo(self, codigo_prestamo, identificacion_lector, codigo_libro, fecha_prestamo, cantidad):
+        # Reglas principales: prestamo unico, lector existente, libro existente e inventario.
         if self.prestamo_repository.exists(codigo_prestamo):
             raise ValueError("Ya existe un prestamo con ese codigo.")
         if not self.lector_repository.exists(identificacion_lector):
@@ -24,10 +28,12 @@ class PrestamoService:
         if inventario_actual < cantidad:
             raise ValueError("No hay inventario suficiente para realizar el prestamo.")
 
+        # El modelo se crea solo cuando todas las validaciones fueron superadas.
         prestamo = Prestamo(codigo_prestamo, lector, libro, fecha_prestamo)
         prestamo.codigo_prestamo = codigo_prestamo
         prestamo.cantidad = cantidad
 
+        # Registrar el prestamo afecta el inventario, por eso se actualiza el libro.
         libro.cantidad = inventario_actual - cantidad
         libro.disponible = libro.cantidad > 0
 
@@ -39,6 +45,7 @@ class PrestamoService:
         return self.prestamo_repository.get_all()
 
     def buscar_por_lector(self, identificacion_lector):
+        # Se filtra por lector porque el repositorio solo busca directo por id del prestamo.
         prestamos_encontrados = []
         for prestamo in self.prestamo_repository.get_all():
             if prestamo.lector.id_lector == identificacion_lector:
@@ -47,6 +54,7 @@ class PrestamoService:
         return prestamos_encontrados
 
     def buscar_por_fecha(self, fecha_prestamo):
+        # Fecha es un criterio secundario, se obtiene recorriendo la lista completa.
         prestamos_encontrados = []
         for prestamo in self.prestamo_repository.get_all():
             if prestamo.fecha_prestamo == fecha_prestamo:

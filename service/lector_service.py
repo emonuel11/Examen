@@ -2,10 +2,14 @@ from model.lector import Lector
 
 
 class LectorService:
+    """Contiene las reglas de negocio relacionadas con lectores."""
+
     def __init__(self, lector_repository):
+        # El repositorio se recibe por constructor para mantener bajo acoplamiento.
         self.lector_repository = lector_repository
 
     def registrar_lector(self, id_lector, nombre, correo, telefono, comunidad):
+        # Service valida las reglas antes de crear y guardar el modelo.
         if self.lector_repository.exists(id_lector):
             raise ValueError("Ya existe un lector con esa identificacion.")
         if not nombre:
@@ -18,11 +22,14 @@ class LectorService:
             raise ValueError("La comunidad del lector es obligatoria.")
 
         lector = Lector(id_lector, nombre, correo, telefono)
+
+        # Comunidad se agrega aqui porque pertenece a la regla de negocio del sistema.
         lector.comunidad = comunidad
         self.lector_repository.add(lector)
         return lector
 
     def consultar_lectores(self):
+        # La consulta se delega al repositorio generico.
         return self.lector_repository.get_all()
 
     def buscar_por_identificacion(self, identificacion):
@@ -35,6 +42,7 @@ class LectorService:
         if not comunidad:
             raise ValueError("La comunidad es obligatoria para realizar la busqueda.")
 
+        # Se recorre la coleccion porque comunidad no es la llave principal del repositorio.
         lectores_encontrados = []
         for lector in self.lector_repository.get_all():
             if getattr(lector, "comunidad", None) == comunidad:

@@ -13,10 +13,12 @@ from view.main_window import MainWindow
 
 
 def crear_aplicacion(root):
+    # Repositories: guardan datos en memoria para cada tipo de entidad.
     lector_repository = RepositoryGeneric("id_lector")
     libro_repository = RepositoryGeneric("id_libro")
     prestamo_repository = RepositoryGeneric("id_prestamo")
 
+    # Services: contienen reglas de negocio y usan repositories.
     lector_service = LectorService(lector_repository)
     libro_service = LibroService(libro_repository)
     prestamo_service = PrestamoService(
@@ -30,11 +32,13 @@ def crear_aplicacion(root):
         prestamo_repository,
     )
 
+    # Controllers: conectan la vista con los services.
     lector_controller = LectorController(lector_service)
     libro_controller = LibroController(libro_service)
     prestamo_controller = PrestamoController(prestamo_service)
     reporte_controller = ReporteController(reporte_service)
 
+    # View principal: recibe controllers, nunca repositories.
     return MainWindow(
         root,
         lector_controller,
@@ -45,6 +49,7 @@ def crear_aplicacion(root):
 
 
 def main():
+    # Punto de entrada de Tkinter.
     root = tk.Tk()
     crear_aplicacion(root)
     root.mainloop()

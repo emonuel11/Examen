@@ -2,10 +2,13 @@ from model.libro import Libro
 
 
 class LibroService:
+    """Contiene las reglas de negocio relacionadas con libros."""
+
     def __init__(self, libro_repository):
         self.libro_repository = libro_repository
 
     def registrar_libro(self, codigo, titulo, autor, categoria, cantidad):
+        # Antes de guardar se comprueba duplicado, datos obligatorios e inventario.
         if self.libro_repository.exists(codigo):
             raise ValueError("Ya existe un libro con ese codigo.")
         if not titulo:
@@ -18,6 +21,8 @@ class LibroService:
             raise ValueError("La cantidad del libro debe ser mayor a 0.")
 
         libro = Libro(codigo, titulo, autor, categoria)
+
+        # codigo y cantidad son datos usados por busquedas, inventario y prestamos.
         libro.codigo = codigo
         libro.cantidad = cantidad
         self.libro_repository.add(libro)
@@ -36,6 +41,7 @@ class LibroService:
         if not categoria:
             raise ValueError("La categoria es obligatoria para realizar la busqueda.")
 
+        # Categoria no es llave primaria, por eso se filtra recorriendo todos los libros.
         libros_encontrados = []
         for libro in self.libro_repository.get_all():
             if libro.categoria == categoria:
